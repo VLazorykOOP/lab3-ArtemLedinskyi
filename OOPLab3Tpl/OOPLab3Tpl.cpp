@@ -45,7 +45,7 @@ public:
         }
     }
 
-    // метод,що перевіряє перемоги 
+    // метод,що перевіряє перемогу 
     bool checkWin() {
         // переверяє рядок
         for (int i = 0; i < 3; i++) {
@@ -95,7 +95,7 @@ public:
     // метод ,який розпочинає гру 
     void play() {
         cout << "Як це працює :Ви вказуєте,який рядок Ви хочете обрати,пiсля чого ви обираєте,який стовбець"<<endl;
-        cout << "Після того,як Ви обрали стовбець гра вважає,що Ви зробили хiд,який не можливо повернути,тому перед тим, як походити"<<endl;
+        cout << "Пiсля того,як Ви обрали стовбець гра вважає,що Ви зробили хiд,який не можливо повернути,тому перед тим, як походити"<<endl;
         cout << "Подумайте двiчi,куди та як саме реалiзувати Ваш хiд."<<endl;
         cout << "\t\t\t\tМої рекомендацiї щодо гри:" << endl;
         cout << "\t\t\t\tЗавдяки цьому неймовiрно зручному керуванню варто подумати довше, нiж завжди)))"<<endl;
@@ -111,7 +111,7 @@ public:
             }
             if (ChekTie()) {
                 displayBoard();
-                cout << "Нічия" << endl;
+                cout << "Нiчия" << endl;
                 break;
             }
             nextTurn();
@@ -127,9 +127,174 @@ void GameCreated() {
     return;
 }
 
+class Vector {
+private:
+    double Arr[3];
+    int stateVar;
+    int count;
+public:
+    Vector() : Arr{ 0,0,0 }, stateVar(0) {
+        count++;
+    }
+    Vector(double A) : Arr{ A,A,A }, stateVar(0) {
+        count++;
+    }
+    Vector(double* A) : stateVar(0) {
+        if (A != nullptr) {
+            for (int i = 0; i < 3; i++) {
+                Arr[i] = A[i];
+            }
+        }
+        else {
+            stateVar = 1;// код помилки 
+        }
+        count++;
+    }
+    ~Vector() {
+        cout << endl;
+        cout << "Вектор деструктований iз змiнною стану :" << stateVar << endl;
+        count--;
+    }
+    void setVal(double A, int i) {
+        Arr[i] = A;
+    }
+    double getEl(int A) {
+        if (A < 0 || A >= 3) {
+            stateVar = 2;//код помилки 
+            cout << "Значення перебiльшують заданний(A < 0 || A >= 3)лiмiт ";
+        }
+        return Arr[A];
+    }
+    void print() {
+        for (int i = 0; i < 3; i++) {
+            cout << endl;
+            cout << Arr[i];
+        }
+    }
+    Vector add(Vector V) {
+        Vector result;
+        for (int i = 0; i < 3; i++) {
+            result.Arr[i] = Arr[i] + V.Arr[i];
+        }
+        return result;
+    }
+    Vector sub(Vector V) {
+        Vector result;
+        for (int i = 0; i < 3; i++) {
+            result.Arr[i] = Arr[i] - V.Arr[i];
+        }
+        return result;
+    }
+    Vector mult(Vector V) {
+        Vector  R;
+        R.Arr[0] = Arr[1] * V.Arr[2] - Arr[2] * V.Arr[1];
+        R.Arr[1] = Arr[2] * V.Arr[0] - Arr[0] * V.Arr[2];
+        R.Arr[2] = Arr[0] * V.Arr[1] - Arr[1] * V.Arr[0];
+        return R;
+    }
+    Vector Div(short V) {
+        Vector result;
+        if (V == 0) {
+            stateVar = 3;//код помилки 
+            cout << "Відбулось ділення на нуль";
+        }
+        else {
+            for (int i = 0; i < 3; i++) {
+                result.Arr[i] = Arr[i] / V;
+            }
+        }
+        return result;
+    }
+    bool operator==(Vector E) {
+        for (int i = 0; i < 3; i++) {
+            if (Arr[i] != E.Arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool operator>(Vector E) {
+        double A = sqrt(Arr[0] * Arr[0] + Arr[1] * Arr[1] + Arr[2] * Arr[2]);
+        double B = sqrt(E.Arr[0] * E.Arr[0] + E.Arr[1] * E.Arr[1] + E.Arr[2] * Arr[2]);
+        if (A > B) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    bool operator<(Vector E) {
+        double A = sqrt(Arr[0] * Arr[0] + Arr[1] * Arr[1] + Arr[2] * Arr[2]);
+        double B = sqrt(E.Arr[0] * E.Arr[0] + E.Arr[1] * E.Arr[1] + E.Arr[2] * Arr[2]);
+        if (A < B) {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+};
+
+void Task() {
+    setlocale(LC_ALL, "ukr");
+    cout << "Стосовно булевих функцiй, якщо виводить 1,то значення повертає true,а якщо 0 -false";
+    double M = 2;
+    double* A = new double;
+    *A = 3;
+    Vector Aa;
+    Aa.print();
+    Vector Y(M);
+    Y.print();
+    Vector D(*A);
+    D.print();
+    Y.add(D);
+    Vector Bb;
+    Bb = Y.add(D);
+    Bb.print();
+    Vector Cc;
+    Cc = Y.sub(D);
+    Cc.print();
+    cout << endl;
+    Vector Zz;
+    double V;
+    for (int i = 0; i < 3; i++) {
+        cout << "Введiть значення :" << endl;
+        cin >> V;
+        Y.setVal(V, i);
+    }
+    Zz = Y.mult(D);
+    Zz.print();
+    Vector ShadowFiend;
+    ShadowFiend = Y.Div(2);
+    ShadowFiend.print();
+    bool Invoker;
+    Invoker = Y.operator==(D);
+    cout << "Оператор дорiвнює :";
+    cout << Invoker;
+    bool Puck;
+    Puck = Y.operator<(D);
+    cout << "Оператор менше :";
+    cout << Puck;
+    bool Tinker;
+    Tinker = Y.operator>(D);
+    cout << "Оператор бiльше :";
+    cout << Tinker;
+
+    return;
+}
 
 int main()
 {
-    GameCreated();
+    setlocale(LC_ALL, "ukr");
+    int n;
+    cout << "1 чи 2 :" << endl;
+    cin >> n;
+    if (n == 1) {
+        GameCreated();
+    }
+    if (n == 2) {
+        Task();
+    }
 }
 
