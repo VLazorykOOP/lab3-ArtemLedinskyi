@@ -133,66 +133,66 @@ private:
     int stateVar;
     int count;
 public:
-    Vector() : Arr{ 0,0,0 }, stateVar(0) {
+    Vector() : Arr{ 0,0,0 }, stateVar(0) {// Конструктор без параметрів
         count++;
     }
-    Vector(double A) : Arr{ A,A,A }, stateVar(0) {
+    Vector(double A) : Arr{ A,A,A }, stateVar(0) {// Конструктор з одним параметром double
         count++;
     }
-    Vector(double* A) : stateVar(0) {
+    Vector(double* A) : stateVar(0) {// Конструктор з одним параметром вказівник на тип
         if (A != nullptr) {
             for (int i = 0; i < 3; i++) {
                 Arr[i] = A[i];
             }
         }
-        else {
+        else {// Якщо вказівник NULL(nulptr) то встановити код помилки
             stateVar = 1;// код помилки 
         }
         count++;
     }
-    ~Vector() {
+    ~Vector() {// Деструктор із виведенням інформації про стан вектора
         cout << endl;
         cout << "Вектор деструктований iз змiнною стану :" << stateVar << endl;
         count--;
     }
-    void setVal(double A, int i) {
+    void setVal(double A, int i) {//функція, яка присвоює масиву деяке значення
         Arr[i] = A;
     }
-    double getEl(int A) {
+    double getEl(int A) {// функція, яка одержує деякий елемент з масиву
         if (A < 0 || A >= 3) {
             stateVar = 2;//код помилки 
             cout << "Значення перебiльшують заданний(A < 0 || A >= 3)лiмiт ";
         }
         return Arr[A];
     }
-    void print() {
+    void print() {//  функція друку
         for (int i = 0; i < 3; i++) {
             cout << endl;
             cout << Arr[i];
         }
     }
-    Vector add(Vector V) {
+    Vector add(Vector V) {// додавання
         Vector result;
         for (int i = 0; i < 3; i++) {
             result.Arr[i] = Arr[i] + V.Arr[i];
         }
         return result;
     }
-    Vector sub(Vector V) {
+    Vector sub(Vector V) {// віднімання
         Vector result;
         for (int i = 0; i < 3; i++) {
             result.Arr[i] = Arr[i] - V.Arr[i];
         }
         return result;
     }
-    Vector mult(Vector V) {
+    Vector mult(Vector V) {// векторний добуток
         Vector  R;
         R.Arr[0] = Arr[1] * V.Arr[2] - Arr[2] * V.Arr[1];
         R.Arr[1] = Arr[2] * V.Arr[0] - Arr[0] * V.Arr[2];
         R.Arr[2] = Arr[0] * V.Arr[1] - Arr[1] * V.Arr[0];
         return R;
     }
-    Vector Div(short V) {
+    Vector Div(short V) {// функція ділення на ціле типу short
         Vector result;
         if (V == 0) {
             stateVar = 3;//код помилки 
@@ -205,7 +205,7 @@ public:
         }
         return result;
     }
-    bool operator==(Vector E) {
+    bool operator==(Vector E) {//функція порівняння рівно
         for (int i = 0; i < 3; i++) {
             if (Arr[i] != E.Arr[i]) {
                 return false;
@@ -213,7 +213,7 @@ public:
         }
         return true;
     }
-    bool operator>(Vector E) {
+    bool operator>(Vector E) {// функція порівняння більше
         double A = sqrt(Arr[0] * Arr[0] + Arr[1] * Arr[1] + Arr[2] * Arr[2]);
         double B = sqrt(E.Arr[0] * E.Arr[0] + E.Arr[1] * E.Arr[1] + E.Arr[2] * Arr[2]);
         if (A > B) {
@@ -223,7 +223,7 @@ public:
             return false;
         }
     }
-    bool operator<(Vector E) {
+    bool operator<(Vector E) {// функція порівняння менше
         double A = sqrt(Arr[0] * Arr[0] + Arr[1] * Arr[1] + Arr[2] * Arr[2]);
         double B = sqrt(E.Arr[0] * E.Arr[0] + E.Arr[1] * E.Arr[1] + E.Arr[2] * Arr[2]);
         if (A < B) {
@@ -243,16 +243,25 @@ void Task() {
     double* A = new double;
     *A = 3;
     Vector Aa;
+    cout << endl;
+    cout << "Виведення конструктора без параметрiв";
     Aa.print();
     Vector Y(M);
+    cout << endl;
+    cout << "Виведення конструктора з одним параметром типу double";
     Y.print();
     Vector D(*A);
+    cout << endl;
+    cout << "Виведення конструктора з одним параметром вказiвник на тип";
     D.print();
-    Y.add(D);
+    cout << endl;
+    cout << "Додавання :" << endl;
     Vector Bb;
     Bb = Y.add(D);
     Bb.print();
     Vector Cc;
+    cout << endl;
+    cout << "Вiднiмання :" << endl;
     Cc = Y.sub(D);
     Cc.print();
     cout << endl;
@@ -264,23 +273,27 @@ void Task() {
         Y.setVal(V, i);
     }
     Zz = Y.mult(D);
+    cout << endl;
+    cout << "Операцiя множення :" << endl;
     Zz.print();
-    Vector ShadowFiend;
-    ShadowFiend = Y.Div(2);
-    ShadowFiend.print();
-    bool Invoker;
-    Invoker = Y.operator==(D);
+    Vector S;
+    cout << endl;
+    cout << "Операцiя дiлення на певне число :" << endl;
+    S = Y.Div(2);
+    S.print();
+    bool I;
+    I = Y.operator==(D);
     cout << "Оператор дорiвнює :";
-    cout << Invoker;
-    bool Puck;
-    Puck = Y.operator<(D);
+    cout << I;
+    bool P;
+    P = Y.operator<(D);
     cout << "Оператор менше :";
-    cout << Puck;
-    bool Tinker;
-    Tinker = Y.operator>(D);
+    cout << P;
+    bool T;
+    T = Y.operator>(D);
     cout << "Оператор бiльше :";
-    cout << Tinker;
-
+    cout << T;
+    delete A;
     return;
 }
 
@@ -295,6 +308,8 @@ int main()
     }
     if (n == 2) {
         Task();
+        
     }
+    return 0;
 }
 
