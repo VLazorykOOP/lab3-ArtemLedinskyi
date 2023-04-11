@@ -313,3 +313,235 @@ int main()
     return 0;
 }
 
+/*#include <iostream>
+using namespace std;
+/*Створити клас матриця. Даний клас містить вказівник на int, розміри рядків і
+стовпців та стан помилки. У класі визначити
+o конструктор без параметрів( виділяє місце для матриці 3 на 3 елемента та
+інінціалізує його в нуль);
+o конструктор з одним параметром – розмір n матриці (виділяє місце n на n та
+інінціалізує матрицю значенням нуль);
+o конструктор із трьома розміри матриці (n , m) та значення ініціалізації value
+(виділяє місце перші аргументи та інінціалізує значенням третього аргументу -
+value);
+o конструктор копій та операцію присвоєння; // !!!
+o деструктор звільняє пам'ять.
+o визначити функцію, яка присвоює елементу масиву деяке значення (параметр за
+замовчуванням);
+o функцію яка одержує деякий елемент матриці за індексами i та j;
+o визначити функції друку, додавання, множення, віднімання, які здійснюють ці
+арифметичні операції з даними цього класу;
+o визначити функції порівняння: більше, менше або рівно, які повертають true
+або false.
+У змінну стани встановлювати код помилки, коли не вистачає пам'яті, виходить за межі
+матриці. Передбачити можливість підрахунку числа об'єктів даного типу. Написати програму
+тестування всіх можливостей цього класу.*/
+/*class Matrix {
+private:
+    int** A;
+    int R, C;
+    int state;
+    bool Glebchik;
+public:
+    void SetGlebchik(bool Yurchik) {
+        Glebchik = Yurchik;
+    }
+    Matrix() :R(3), C(3), state(0) {
+
+        A = new int* [3];
+        for (int i = 0; i < 3; i++) {
+            A[i] = new int[3];
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                A[i][j] = 0;
+            }
+        }
+    }
+    Matrix(int n) :R(n), C(n), state(0) {
+        A = new int* [n];
+        for (int i = 0; i < n; i++) {
+            A[i] = new int[n];
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                A[i][j] = 0;
+            }
+        }
+    }
+    Matrix(int n, int m, int value) :R(n), C(m), state(0) {
+        A = new int* [n];
+        for (int i = 0; i < n; i++) {
+            A[i] = new int[m];
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                A[i][j] = value;
+            }
+        }
+    }
+    Matrix(const Matrix& B) :R(B.R), C(B.C), state(0) {
+        this->A = new int* [B.R];
+        for (int i = 0; i < B.R; i++) {// Конструктор копій
+            A[i] = new int[B.C];
+        }
+        for (int i = 0; i < B.R; i++) {// Операцію присвоєння
+            for (int j = 0; j < B.C; j++) {
+                A[i][j] = B.A[i][j];
+            }
+        }
+    }
+    ~Matrix() {
+        if (Glebchik) {
+            for (int i = 0; i < R; i++) {
+                delete[] A[i];
+            }
+            delete[] A;
+        }
+        else {
+            Glebchik = true;
+        }
+    }
+    void SetVal(int Value, int i, int j) {
+        A[i][j] = Value;
+    }
+    int  GetVal(int i, int j) {
+        return A[i][j];
+    }
+    void print() {
+        for (int i = 0; i < R; i++) {
+            cout << endl;
+            for (int j = 0; j < C; j++) {
+                cout << A[i][j] << " ";
+            }
+        }
+    }
+    Matrix Add(Matrix B) {
+        Matrix result;
+        if (R != B.R || C != B.C) {
+            cout << "Розмірність матриць не співпадає ";
+            return result;
+        }
+        else {
+            for (int i = 0; i < R; i++) {
+                for (int j = 0; j < C; j++) {
+                    result.A[i][j] = A[i][j] + B.A[i][j];
+                }
+            }
+        }
+        result.SetGlebchik(false);
+        return result;
+    }
+    Matrix Sub(Matrix B) {
+        Matrix result;
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                result.A[i][j] = A[i][j] - B.A[i][j];
+            }
+        }
+        result.SetGlebchik(false);
+        return result;
+    }
+    Matrix Mult(const Matrix& B) {
+        Matrix result(R, B.C, 0);
+        if (C != B.R) {
+            state = 1;
+            cout << "Перемноження матриць неможливе!";
+        }
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < B.C; j++) {
+                int sum = 0;
+                for (int k = 0; k < C; k++) {
+                    sum += A[i][k] * B.A[k][j];
+                }
+                result.A[i][j] = sum;
+            }
+        }
+        result.SetGlebchik(false);
+        return result;
+    }
+    bool operator==(Matrix E) {//функція порівняння рівно
+        if (this->R != E.R || this->C != E.C) {
+            return false;
+        }
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                if (this->A[i][j] != E.A[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    int GetR() {
+        return this->R;
+    }
+    int GetC() {
+        return this->C;
+    }
+    bool operator>(Matrix G) {
+        if (this->R != G.GetR() || this->C != G.GetC()) {
+            cout << "Функцію зробити не можливо!";
+            return false;
+        }
+        else {
+            for (int i = 0; i < R; i++) {
+                {
+                    for (int j = 0; j < C; j++) {
+                        if (this->A[i][j] <= G.GetVal(i, j)) {
+                            return false;
+                        }
+
+                    }
+                    return true;
+                }
+            }
+        }
+    }
+    bool operator<(Matrix G) {
+        if (this->R != G.GetR() || this->C != G.GetC()) {
+            cout << "Функцію зробити не можливо!";
+            return false;
+        }
+        else {
+            for (int i = 0; i < R; i++) {
+                {
+                    for (int j = 0; j < C; j++) {
+                        if (this->A[i][j] >= G.GetVal(i, j)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+    }
+};
+
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "ukr");
+    Matrix A;
+    cout << "Конструктор з одним параметром .";
+    A.print();
+    Matrix B(3);
+    cout << endl;
+    cout << "Конструктор з двома параметром .";
+    B.print();
+    Matrix C(3, 3, 5);
+    cout << endl;
+    cout << "Конструктор з трьома параметрами .";
+    C.print();
+    cout << endl;
+    cout << "Додавання " << endl;
+    Matrix Z;
+    Z = C.Add(B);
+    Z.print();
+    cout << endl;
+    Matrix Cc;
+
+    return 0;
+}*/
