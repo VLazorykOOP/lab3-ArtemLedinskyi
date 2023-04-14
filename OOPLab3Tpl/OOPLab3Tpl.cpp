@@ -296,24 +296,7 @@ void Task() {
     delete A;
     return;
 }
-
-int main()
-{
-    setlocale(LC_ALL, "ukr");
-    int n;
-    cout << "1 чи 2 :" << endl;
-    cin >> n;
-    if (n == 1) {
-        GameCreated();
-    }
-    if (n == 2) {
-        Task();
-        
-    }
-    return 0;
-}
-
-/*#include <iostream>
+#include <iostream>
 using namespace std;
 /*Створити клас матриця. Даний клас містить вказівник на int, розміри рядків і
 стовпців та стан помилки. У класі визначити
@@ -336,18 +319,20 @@ o визначити функції порівняння: більше, менш
 У змінну стани встановлювати код помилки, коли не вистачає пам'яті, виходить за межі
 матриці. Передбачити можливість підрахунку числа об'єктів даного типу. Написати програму
 тестування всіх можливостей цього класу.*/
-/*class Matrix {
+#include<iostream>
+#include<string>
+using namespace std;
+class Matrix {
 private:
     int** A;
     int R, C;
     int state;
-    bool Glebchik;
+    bool L;
 public:
-    void SetGlebchik(bool Yurchik) {
-        Glebchik = Yurchik;
+    void SetL(bool L) {
+       this->L=L;
     }
     Matrix() :R(3), C(3), state(0) {
-
         A = new int* [3];
         for (int i = 0; i < 3; i++) {
             A[i] = new int[3];
@@ -392,14 +377,14 @@ public:
         }
     }
     ~Matrix() {
-        if (Glebchik) {
+        if (L) {
             for (int i = 0; i < R; i++) {
                 delete[] A[i];
             }
             delete[] A;
         }
         else {
-            Glebchik = true;
+            L = true;
         }
     }
     void SetVal(int Value, int i, int j) {
@@ -429,7 +414,7 @@ public:
                 }
             }
         }
-        result.SetGlebchik(false);
+        result.SetL(false);
         return result;
     }
     Matrix Sub(Matrix B) {
@@ -439,7 +424,7 @@ public:
                 result.A[i][j] = A[i][j] - B.A[i][j];
             }
         }
-        result.SetGlebchik(false);
+        result.SetL(false);
         return result;
     }
     Matrix Mult(const Matrix& B) {
@@ -457,7 +442,7 @@ public:
                 result.A[i][j] = sum;
             }
         }
-        result.SetGlebchik(false);
+        result.SetL(false);
         return result;
     }
     bool operator==(Matrix E) {//функція порівняння рівно
@@ -491,7 +476,6 @@ public:
                         if (this->A[i][j] <= G.GetVal(i, j)) {
                             return false;
                         }
-
                     }
                     return true;
                 }
@@ -517,13 +501,8 @@ public:
         }
     }
 };
-
-
-
-
-int main()
-{
-    setlocale(LC_ALL, "ukr");
+void task3(){
+     setlocale(LC_ALL, "ukr");
     Matrix A;
     cout << "Конструктор з одним параметром .";
     A.print();
@@ -542,6 +521,40 @@ int main()
     Z.print();
     cout << endl;
     Matrix Cc;
-
+Cc=C.Mult(B);
+cout<<"Множення :"<<endl;
+Cc.print();
+bool P = C.operator==(B);
+cout<<endl;
+cout<<"Оператор дорівнює :"<<endl;
+cout<<P<<endl;
+bool J =C.operator<(B);
+cout<<"Оператор менше :"<<endl;
+cout<<J<<endl;
+bool L = C.operator>(B);
+cout<<"Оператор більше :"<<endl;
+cout<<L<<endl;
+Matrix DCP;
+cout<<"Вставлення значення :"<<endl;
+DCP.SetVal(5,1,2);
+DCP.print();
+cout<<endl;
+    return;
+}
+int main()
+{
+    setlocale(LC_ALL, "ukr");
+    int n;
+    cout << "1 чи 2 :" << endl;
+    cin >> n;
+    if (n == 1) {
+        GameCreated();
+    }
+    if (n == 2) {
+        Task();
+    }
+    if(n == 3){
+        Task3();
+    }
     return 0;
-}*/
+}
